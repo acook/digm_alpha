@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = DigmAlpha::VERSION
   gem.authors       = ["Anthony Cook"]
   gem.email         = ["anthonymichaelcook@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{(para)digm Alpha is the first language experiment of many leading to a hypothetical ideal.}
+  gem.summary       = %q{(para)digm Alpha: a language experiment}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
