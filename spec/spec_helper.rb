@@ -2,7 +2,9 @@ $: << File.dirname(__FILE__)
 $: << File.join($:.last, '..', 'lib')
 
 require 'bundler'
-Bundler.require(:test)
+Bundler.setup
+
+require 'rspec'
 require 'pry'
 
 def run(*args)

@@ -2,21 +2,37 @@ require 'treetop'
 require_relative 'parser/node_extensions'
 
 class DigmAlpha::Parser
-  def parser reload
-    return @parser if !reload && @parser
+  class << self
+    def parser reload = false
+      return @parser if !reload && @parser
 
-    grammar_file = File.join base_path, 'digm_alpha_parser.treetop'
-    Treetop.load grammar_file
-    @parser = DigmAlphaParser.new
-  end
+      grammar_file = 'lib/digm_alpha/parser/digm_alpha_parser.treetop'
+      Treetop.load grammar_file
+      @parser = DigmAlpha::DigmAlphaGrammarParser.new
+    end
 
-  def self.parse data
-    tree = parser.parse(data)
+    def parse data
+      tree = parser.parse(data)
 
-    if tree then
-      tree
-    else
-      raise Exception, "Parse error at offset: #{parser.index}"
+      if tree then
+        tree
+      else
+        raise Exception, "Parse error at offset: #{parser.index}, because of: #{parser.failure_reason}"
+      end
+    end
+
+    protected
+
+    def clean_tree root_node
+      return if root_node.elements.nil?
+
+      root_node.elements.delete_if do |node|
+        node.is_a? Treetop::Runtime::SyntaxNode
+      end
+
+      root_node.elements.each do |node|
+        self.clean_tree(node)
+      end
     end
   end
 end
